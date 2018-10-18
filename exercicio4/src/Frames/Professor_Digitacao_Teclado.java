@@ -121,6 +121,7 @@ public class Professor_Digitacao_Teclado {
 		
 		for(int i = 0; i < buttonLinha1.length; i++) {
 			buttonLinha1[i] = new JButton(nomeLinha1[i]);
+			defaultColor = buttonLinha1[i].getBackground();
 			buttonLinha1[i].setSize(45,40);
 			buttonLinha1[i].setLocation(x, 370);
 			if(buttonLinha1[i].getText().equals("Backspace")) {
@@ -203,59 +204,91 @@ public class Professor_Digitacao_Teclado {
 		textAreaDigitacao.setLineWrap(true);
 		textAreaDigitacao.setEditable(false);
 		textAreaDigitacao.addKeyListener(new KeyListener() {
+		
 			
 			@Override
 			public void keyTyped(KeyEvent e) {
 				for(int i = 0; i < buttonLinha1.length; i++) {
-					defaultColor = buttonLinha1[i].getBackground();
 					Character charac = e.getKeyChar();
-					if(charac.toString().equals(buttonLinha1[i].getText())) {
+					if(charac.toString().toUpperCase().equals(buttonLinha1[i].getText())) {
 						buttonLinha1[i].setBackground(Color.GREEN);
 						escreveLetra(buttonLinha1[i].getText());
 					}
 				}
+				
+				for(int i = 0; i < buttonLinha2.length; i++) {
+					Character charac = e.getKeyChar();
+					if(charac.toString().toUpperCase().equals(buttonLinha2[i].getText())) {
+						buttonLinha2[i].setBackground(Color.GREEN);
+						escreveLetra(buttonLinha2[i].getText());
+					}
+				}
+				
+				for(int i = 0; i < buttonLinha3.length; i++) {
+					Character charac = e.getKeyChar();
+					if(charac.toString().toUpperCase().equals(buttonLinha3[i].getText())) {
+						buttonLinha3[i].setBackground(Color.GREEN);
+						escreveLetra(buttonLinha3[i].getText());
+					}
+				}
+				
+				for(int i = 0; i < buttonLinha4.length; i++) {
+					Character charac = e.getKeyChar();
+					if(charac.toString().toUpperCase().equals(buttonLinha4[i].getText())) {
+						buttonLinha4[i].setBackground(Color.GREEN);
+						escreveLetra(buttonLinha4[i].getText());
+					}
+				}
+				
+				for(int i = 0; i < buttonLinha5.length; i++) {
+					Character charac = e.getKeyChar();
+					if(charac.toString().toUpperCase().equals(buttonLinha5[i].getText())) {
+						buttonLinha5[i].setBackground(Color.GREEN);
+						escreveLetra(buttonLinha5[i].getText());
+					}
+				}
 			}
 			
 			@Override
 			public void keyReleased(KeyEvent e) {
 				for(int i = 0; i < buttonLinha1.length; i++) {
 					Character charac = e.getKeyChar();
-					if(charac.toString().equals(buttonLinha1[i].getText())) {
+					if(charac.toString().toUpperCase().equals(buttonLinha1[i].getText())) {
 						buttonLinha1[i].setBackground(defaultColor);
 					}
 				}
-			}
 				
-			
-			@Override
-			public void keyPressed(KeyEvent e) {
-			}
-		});
-		
-		textAreaDigitacao.addKeyListener(new KeyListener() {
-			
-			@Override
-			public void keyTyped(KeyEvent e) {
 				for(int i = 0; i < buttonLinha2.length; i++) {
-					defaultColor = buttonLinha2[i].getBackground();
 					Character charac = e.getKeyChar();
-					if(charac.toString().equals(buttonLinha2[i].getText())) {
-						buttonLinha2[i].setBackground(Color.GREEN);
-						escreveLetra(buttonLinha2[i].getText());
+					if(charac.toString().toUpperCase().equals(buttonLinha2[i].getText())) {
+						buttonLinha2[i].setBackground(defaultColor);
 					}
-				}				
-			}
-			
-			@Override
-			public void keyReleased(KeyEvent e) {
-				// TODO Auto-generated method stub
+				}
 				
+				for(int i = 0; i < buttonLinha3.length; i++) {
+					Character charac = e.getKeyChar();
+					if(charac.toString().toUpperCase().equals(buttonLinha3[i].getText())) {
+						buttonLinha3[i].setBackground(defaultColor);
+					}
+				}
+				
+				for(int i = 0; i < buttonLinha4.length; i++) {
+					Character charac = e.getKeyChar();
+					if(charac.toString().toUpperCase().equals(buttonLinha4[i].getText())) {
+						buttonLinha4[i].setBackground(defaultColor);
+					}
+				}
+				
+				for(int i = 0; i < buttonLinha5.length; i++) {
+					Character charac = e.getKeyChar();
+					if(charac.toString().toUpperCase().equals(buttonLinha5[i].getText())) {
+						buttonLinha5[i].setBackground(defaultColor);
+					}
+				}
 			}
 			
 			@Override
 			public void keyPressed(KeyEvent e) {
-				// TODO Auto-generated method stub
-				
 			}
 		});
 		
@@ -311,7 +344,7 @@ public class Professor_Digitacao_Teclado {
 	private void escreveLetra(Character letra) {
 		String capturaEscrever = textAreaDigitacao.getText();
 		textAreaDigitacao.setText(capturaEscrever + letra);
-		textAreaDigitacao.requestFocus(false);
+		textAreaDigitacao.requestFocus(true);
 	}
 	
 	public static void main(String[] args) {
