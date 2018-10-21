@@ -1,19 +1,16 @@
 package Frames;
 
 import java.awt.Color;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
-import javax.swing.KeyStroke;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.Document;
 
@@ -86,7 +83,7 @@ public class Professor_Digitacao_Teclado {
 	
 	private String[] nomeLinha1 = {"~", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "-", "+", "Backspace"};
 	private String[] nomeLinha2 = {"Tab", "Q", "W", "E", "R", "T", "Y", "U", "I", "O", "P", "[", "]", "\\"};
-	private String[] nomeLinha3 = {"Caps", "A", "S", "D", "F", "G", "H", "J", "K", "L", ":", "\"", "Enter"};
+	private String[] nomeLinha3 = {"Caps Lock", "A", "S", "D", "F", "G", "H", "J", "K", "L", ":", "\"", "Enter"};
 	private String[] nomeLinha4 = {"Shift", "Z", "X", "C", "V", "B", "N", "M", ",", ".", "?", "^"};
 	private String[] nomeLinha5 = {"Space", "<", "v", ">"};
 	
@@ -102,6 +99,8 @@ public class Professor_Digitacao_Teclado {
 	private JButton[] buttonLinha4 = { buttonShift, buttonZ, buttonX, buttonC, buttonV, buttonB, buttonN, buttonM, buttonVirgula,
 			buttonPonto, buttonInterrogacao, buttonSobe };
 	
+	private Map<JButton[], String[]> juntaButtons = new HashMap<>();
+	
 	private JButton[] buttonLinha5 = { buttonEspaco, buttonEsquerda, buttonBaixo, buttonDireita };
 	
 	private JTextArea textAreaDigitacao;
@@ -109,6 +108,8 @@ public class Professor_Digitacao_Teclado {
 	private String capsOrShiftCase = "";
 	
 	private Color defaultColor = null;
+	
+	private boolean ifUpperCase = false;
 	
 	public Professor_Digitacao_Teclado() {}
 	
@@ -149,7 +150,7 @@ public class Professor_Digitacao_Teclado {
 			buttonLinha3[i] = new JButton(nomeLinha3[i]);
 			buttonLinha3[i].setSize(45,40);
 			buttonLinha3[i].setLocation(x, 470);
-			if(buttonLinha3[i].getText().equals("Caps")) {
+			if(buttonLinha3[i].getText().equals("Caps Lock")) {
 				buttonLinha3[i].setSize(70, 40);
 				x+= 25;
 			}
@@ -190,6 +191,12 @@ public class Professor_Digitacao_Teclado {
 			x+=60;
 		}
 		
+		juntaButtons.put(buttonLinha1, nomeLinha1);
+		juntaButtons.put(buttonLinha2, nomeLinha2);
+		juntaButtons.put(buttonLinha3, nomeLinha3);
+		juntaButtons.put(buttonLinha4, nomeLinha4);
+		juntaButtons.put(buttonLinha5, nomeLinha5);
+		
 		labelTexto1 = new JLabel("Type some text using your keyboard. The keys you press will be highlighted and the text will be displayed.");
 		labelTexto1.setLocation(15, 10);
         labelTexto1.setSize(600, 20);
@@ -204,91 +211,191 @@ public class Professor_Digitacao_Teclado {
 		textAreaDigitacao.setLineWrap(true);
 		textAreaDigitacao.setEditable(false);
 		textAreaDigitacao.addKeyListener(new KeyListener() {
-		
 			
 			@Override
 			public void keyTyped(KeyEvent e) {
-				for(int i = 0; i < buttonLinha1.length; i++) {
-					Character charac = e.getKeyChar();
-					if(charac.toString().toUpperCase().equals(buttonLinha1[i].getText())) {
-						buttonLinha1[i].setBackground(Color.GREEN);
-						escreveLetra(buttonLinha1[i].getText());
-					}
-				}
+				// TODO Auto-generated method stub
 				
-				for(int i = 0; i < buttonLinha2.length; i++) {
-					Character charac = e.getKeyChar();
-					if(charac.toString().toUpperCase().equals(buttonLinha2[i].getText())) {
-						buttonLinha2[i].setBackground(Color.GREEN);
-						escreveLetra(buttonLinha2[i].getText());
-					}
-				}
-				
-				for(int i = 0; i < buttonLinha3.length; i++) {
-					Character charac = e.getKeyChar();
-					if(charac.toString().toUpperCase().equals(buttonLinha3[i].getText())) {
-						buttonLinha3[i].setBackground(Color.GREEN);
-						escreveLetra(buttonLinha3[i].getText());
-					}
-				}
-				
-				for(int i = 0; i < buttonLinha4.length; i++) {
-					Character charac = e.getKeyChar();
-					if(charac.toString().toUpperCase().equals(buttonLinha4[i].getText())) {
-						buttonLinha4[i].setBackground(Color.GREEN);
-						escreveLetra(buttonLinha4[i].getText());
-					}
-				}
-				
-				for(int i = 0; i < buttonLinha5.length; i++) {
-					Character charac = e.getKeyChar();
-					if(charac.toString().toUpperCase().equals(buttonLinha5[i].getText())) {
-						buttonLinha5[i].setBackground(Color.GREEN);
-						escreveLetra(buttonLinha5[i].getText());
-					}
-				}
 			}
 			
 			@Override
 			public void keyReleased(KeyEvent e) {
 				for(int i = 0; i < buttonLinha1.length; i++) {
-					Character charac = e.getKeyChar();
-					if(charac.toString().toUpperCase().equals(buttonLinha1[i].getText())) {
+					String keyText = KeyEvent.getKeyText(e.getKeyCode());
+					if(keyText.toString().equals(buttonLinha1[i].getText())) {
 						buttonLinha1[i].setBackground(defaultColor);
 					}
 				}
+			}
+			@Override
+			public void keyPressed(KeyEvent e) {
+				for(int i = 0; i < buttonLinha1.length; i++) {
+					String keyText = KeyEvent.getKeyText(e.getKeyCode());
+					if(keyText.toString().equals(buttonLinha1[i].getText())) {
+						if(keyText.equals("Backspace")) {
+							Document doc = textAreaDigitacao.getDocument();
+							if(doc.getLength() > 0) {
+								try {
+									doc.remove(doc.getLength()-1, 1);
+								} catch (BadLocationException e1) {
+									e1.printStackTrace();
+								}
+							}
+						} else {
+							buttonLinha1[i].setBackground(Color.GREEN);
+							if(ifUpperCase) {
+								escreveLetra(buttonLinha1[i].getText().toLowerCase());
+							} else {
+								escreveLetra(buttonLinha1[i].getText());
+							}
+						}
+					}
+				}
+			}
+		});
+		
+		textAreaDigitacao.addKeyListener(new KeyListener() {
+			
+			@Override
+			public void keyTyped(KeyEvent e) {
+				// TODO Auto-generated method stub
 				
+			}
+			
+			@Override
+			public void keyReleased(KeyEvent e) {
 				for(int i = 0; i < buttonLinha2.length; i++) {
-					Character charac = e.getKeyChar();
-					if(charac.toString().toUpperCase().equals(buttonLinha2[i].getText())) {
+					String keyText = KeyEvent.getKeyText(e.getKeyCode());
+					if(keyText.toString().toUpperCase().equals(buttonLinha2[i].getText())) {
 						buttonLinha2[i].setBackground(defaultColor);
-					}
-				}
-				
-				for(int i = 0; i < buttonLinha3.length; i++) {
-					Character charac = e.getKeyChar();
-					if(charac.toString().toUpperCase().equals(buttonLinha3[i].getText())) {
-						buttonLinha3[i].setBackground(defaultColor);
-					}
-				}
-				
-				for(int i = 0; i < buttonLinha4.length; i++) {
-					Character charac = e.getKeyChar();
-					if(charac.toString().toUpperCase().equals(buttonLinha4[i].getText())) {
-						buttonLinha4[i].setBackground(defaultColor);
-					}
-				}
-				
-				for(int i = 0; i < buttonLinha5.length; i++) {
-					Character charac = e.getKeyChar();
-					if(charac.toString().toUpperCase().equals(buttonLinha5[i].getText())) {
-						buttonLinha5[i].setBackground(defaultColor);
 					}
 				}
 			}
 			
 			@Override
 			public void keyPressed(KeyEvent e) {
+				for(int i = 0; i < buttonLinha2.length; i++) {
+					String keyText = KeyEvent.getKeyText(e.getKeyCode());
+					if(keyText.toString().equals(buttonLinha2[i].getText())) {
+						System.out.println(keyText);
+						buttonLinha2[i].setBackground(Color.GREEN);
+						if(ifUpperCase) {
+							escreveLetra(buttonLinha2[i].getText().toLowerCase());
+						} else {
+							escreveLetra(buttonLinha2[i].getText());
+						}
+					}
+				}
+			}
+		});
+		
+		textAreaDigitacao.addKeyListener(new KeyListener() {
+			
+			@Override
+			public void keyTyped(KeyEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void keyReleased(KeyEvent e) {
+				for(int i = 0; i < buttonLinha3.length; i++) {
+					String keyText = KeyEvent.getKeyText(e.getKeyCode());
+					if(keyText.toString().toUpperCase().equals(buttonLinha3[i].getText())) {
+						buttonLinha3[i].setBackground(defaultColor);
+					}
+				}
+			}
+
+			@Override
+			public void keyPressed(KeyEvent e) {
+				for(int i = 0; i < buttonLinha3.length; i++) {
+					String keyText = KeyEvent.getKeyText(e.getKeyCode());
+					if(keyText.equals("Caps Lock")) {
+						ifUpperCase = !ifUpperCase;
+					} else
+					if(keyText.toString().equals(buttonLinha3[i].getText())) {
+						System.out.println(keyText);
+						buttonLinha3[i].setBackground(Color.GREEN);
+						if(ifUpperCase) {
+							escreveLetra(buttonLinha3[i].getText().toLowerCase());
+						} else {
+							escreveLetra(buttonLinha3[i].getText());
+						}
+					}
+				}
+			}
+		});
+		
+		textAreaDigitacao.addKeyListener(new KeyListener() {
+			
+			@Override
+			public void keyTyped(KeyEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void keyReleased(KeyEvent e) {
+				for(int i = 0; i < buttonLinha4.length; i++) {
+					String keyText = KeyEvent.getKeyText(e.getKeyCode());
+					if(keyText.toString().equals(buttonLinha4[i].getText())) {
+						buttonLinha4[i].setBackground(defaultColor);
+					}
+				}
+			}
+
+			@Override
+			public void keyPressed(KeyEvent e) {
+				for(int i = 0; i < buttonLinha4.length; i++) {
+					String keyText = KeyEvent.getKeyText(e.getKeyCode());
+					if(keyText.toString().equals(buttonLinha4[i].getText())) {
+						System.out.println(keyText);
+						buttonLinha4[i].setBackground(Color.GREEN);
+						if(ifUpperCase) {
+							escreveLetra(buttonLinha4[i].getText().toLowerCase());
+						} else {
+							escreveLetra(buttonLinha4[i].getText());
+						}
+					}
+				}
+			}
+		});
+		
+		textAreaDigitacao.addKeyListener(new KeyListener() {
+			
+			@Override
+			public void keyTyped(KeyEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void keyReleased(KeyEvent e) {
+				for(int i = 0; i < buttonLinha5.length; i++) {
+					String keyText = KeyEvent.getKeyText(e.getKeyCode());
+					if(keyText.equals("Espaço")) {
+						keyText = "Space";
+					}
+					if(keyText.toString().equals(buttonLinha5[i].getText())) {
+						buttonLinha5[i].setBackground(defaultColor);
+					}
+				}
+			}
+			@Override
+			public void keyPressed(KeyEvent e) {
+				for(int i = 0; i < buttonLinha5.length; i++) {
+					String keyText = KeyEvent.getKeyText(e.getKeyCode());
+					if(keyText.equals("Espaço")) {
+						keyText = "Space";
+					}
+					if(keyText.toString().equals(buttonLinha5[i].getText())) {
+						buttonLinha5[i].setBackground(Color.GREEN);
+						escreveLetra(" ");
+//					} else if(e.getKeyCode() == ) {
+						
+					}
+				}	
 			}
 		});
 		
